@@ -22,7 +22,7 @@ import static me.itsmyunderscore.ChatFilter.getFilter;
 
 public class ChatEvent implements Listener {
 
-    private Filter filter = getFilter();
+    private final Filter filter = getFilter();
 
     @EventHandler
     public void onChatFilter(AsyncPlayerChatEvent event) {
@@ -43,13 +43,13 @@ public class ChatEvent implements Listener {
             Message.debug("Checking for this " + word);
             if (message.toLowerCase().contains(word)) {
                 filteredWord = message;
-                String selectedWord = "";
+                StringBuilder selectedWord = new StringBuilder();
                 Message.debug("Word found");
                 for (int i = 0; i < word.length(); i++) {
-                    selectedWord = selectedWord + "*";
+                    selectedWord.append("*");
                 }
                 Message.debug("Word censored");
-                event.setMessage(message.replace(word, selectedWord));
+                event.setMessage(message.replace(word, selectedWord.toString()));
                 player.sendMessage(ChatColor.RED + "Do not swear in chat!");
                 Message.debug("msg replaced");
 

@@ -18,6 +18,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.Objects;
 import java.util.Random;
 
 
@@ -62,8 +63,8 @@ public final class ChatFilter extends JavaPlugin {
 
     private void registerCommands() {
         try {
-            getCommand("filter").setExecutor(new Filter_cmd());
-            getCommand("cfdebug").setExecutor(new Debug_cmd());
+            Objects.requireNonNull(getCommand("filter")).setExecutor(new Filter_cmd());
+            Objects.requireNonNull(getCommand("cfdebug")).setExecutor(new Debug_cmd());
         } catch (Exception exception) {
             Message.log("Registering failed or not implemented yet - 0x02");
         }
