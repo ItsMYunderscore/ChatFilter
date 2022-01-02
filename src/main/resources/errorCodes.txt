@@ -1,0 +1,8 @@
+
+0x01
+0x02    -   This function is not implemented yet so this error will show up
+0x03
+
+Critical errors
+1x01    -   Your config is corrupted try deleting your custom config, default one will be generated automatically
+1x02    -   Forbidden Words config is corrupted try deleting your custom config, default one will be generated automatically

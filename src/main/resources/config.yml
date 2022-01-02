@@ -1,0 +1,8 @@
+options:
+  filter:
+    enabled: true
+    debug: false
+  exempt:
+    enabled: true
+    users:
+      - 'yournamehere'

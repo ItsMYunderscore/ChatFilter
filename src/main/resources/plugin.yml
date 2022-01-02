@@ -1,0 +1,7 @@
+name: ItsMY_ChatFilter
+version: @version@
+main: me.itsmyunderscore.ChatFilter
+api-version: 1.17
+authors: [ ItsMYunderscore ]
+description: Basic ChatFilter
+website: https://itsmyunderscore.me/
