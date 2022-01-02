@@ -50,7 +50,7 @@ public class ChatEvent implements Listener {
                 }
                 Message.debug("Word censored");
                 event.setMessage(message.replace(word, selectedWord));
-
+                player.sendMessage(ChatColor.RED + "Do not swear in chat!");
                 Message.debug("msg replaced");
 
                 break;

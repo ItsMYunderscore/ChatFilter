@@ -7,6 +7,7 @@
 
 package me.itsmyunderscore;
 
+import me.itsmyunderscore.commands.Debug_cmd;
 import me.itsmyunderscore.commands.Filter_cmd;
 import me.itsmyunderscore.config.Config;
 import me.itsmyunderscore.config.ForbiddenWords;
@@ -62,6 +63,7 @@ public final class ChatFilter extends JavaPlugin {
     private void registerCommands() {
         try {
             getCommand("filter").setExecutor(new Filter_cmd());
+            getCommand("cfdebug").setExecutor(new Debug_cmd());
         } catch (Exception exception) {
             Message.log("Registering failed or not implemented yet - 0x02");
         }

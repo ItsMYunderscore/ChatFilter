@@ -40,5 +40,6 @@ public class Config {
     public static ConfigFile getConfigFile() {
         return configFile;
     }
+
 }
 

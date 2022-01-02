@@ -5,3 +5,9 @@ api-version: 1.17
 authors: [ ItsMYunderscore ]
 description: Basic ChatFilter
 website: https://itsmyunderscore.me/
+commands:
+  cfdebug:
+    name: Debug is switched by this
+
+  filter:
+    name: Not implemented yet
