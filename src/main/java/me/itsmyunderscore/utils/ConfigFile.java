@@ -1,5 +1,5 @@
 /*
- * This plugin has been created by ItsMYundercore.
+ * This plugin has been created by ItsMYunderscore.
  * It is prohibited from any use without written agreement with the author.
  *
  * Copyright (c) ItsMYunderscore 2021.
@@ -18,9 +18,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * Created by sores on 7/31/2019.
- */
+
 public class ConfigFile extends YamlConfiguration {
 
     private File file;
