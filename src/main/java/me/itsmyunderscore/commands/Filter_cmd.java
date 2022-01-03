@@ -18,7 +18,9 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.omg.PortableInterceptor.INACTIVE;
 
+import java.lang.reflect.Method;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static me.itsmyunderscore.ChatFilter.getFilter;
@@ -33,11 +35,19 @@ public class Filter_cmd implements CommandExecutor {
     public Filter_cmd() {
         filter = getFilter();
         config = Config.getConfigFile();
+        String WMActivity;
+        if(Config.WORDMANAGER_CMD_ENABLED){
+            WMActivity = "&4&lINACTIVE";
+            Message.log("Word Manager is inactive - Can be turned on in config if on error is following");
+            Message.log("0x04");
+        } else {
+            WMActivity = "&a&lACTIVE";
+        }
 
         usage = new String[]{
                 StringUtil.color("&8&m----------------------Filter----------------------"),
                 StringUtil.color("&a&lNot all commands are fully functional right now!"),
-                StringUtil.color("&a&l/filter words - Filtered words manager"),
+                StringUtil.color("&a&l/filter words - Filtered words manager " + WMActivity),
                 StringUtil.color("&8&m--------------------------------------------------")
         };
 
@@ -77,6 +87,9 @@ public class Filter_cmd implements CommandExecutor {
                 }
             } else if (args.length == 2) {
                 if (args[0].equalsIgnoreCase("words")) {
+                    if(!Config.WORDMANAGER_CMD_ENABLED){
+                        player.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "[CF - WordManager]" + ChatColor.WHITE + " Word manager is inactive");
+                    }
                     if(args[1].equalsIgnoreCase("?") || args[1].equalsIgnoreCase("help")){
                         if (player.hasPermission("filter.words.manage")){
                             Message.sendList(player, wordManagerUsage);
@@ -95,6 +108,9 @@ public class Filter_cmd implements CommandExecutor {
                 }
             } else if (args.length == 3) {
                 if (args[0].equalsIgnoreCase("words") && args[1].equalsIgnoreCase("add")) {
+                    if(!Config.WORDMANAGER_CMD_ENABLED){
+                        player.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "[CF - WordManager]" + ChatColor.WHITE + " Word manager is inactive");
+                    }
                     if (player.hasPermission("filter.words.manage")) {
                         AtomicBoolean isFiltered = new AtomicBoolean(false);    //todo: check for errors
                         ForbiddenWords.forbidden_WORDS.forEach(word -> {

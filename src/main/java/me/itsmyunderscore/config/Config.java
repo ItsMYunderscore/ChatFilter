@@ -21,6 +21,8 @@ public class Config {
 
     public static boolean DEBUG_ENABLED;
 
+    public static boolean WORDMANAGER_CMD_ENABLED;
+
     public static List<String> EXEMPT_USERS;
 
     public Config() {
@@ -29,6 +31,7 @@ public class Config {
 
             FILTER_ENABLED = config.getBoolean("options.filter.enabled");
             DEBUG_ENABLED = config.getBoolean("options.filter.debug");
+            WORDMANAGER_CMD_ENABLED = config.getBoolean("options.filter.wordmanager");
             EXEMPT_USERS = config.getStringList("options.exempt.users");
 
             configFile = config;

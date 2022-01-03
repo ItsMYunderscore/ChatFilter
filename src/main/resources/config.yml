@@ -2,6 +2,7 @@ options:
   filter:
     enabled: true
     debug: false
+    wordmanager: false
   exempt:
     enabled: true
     users:
