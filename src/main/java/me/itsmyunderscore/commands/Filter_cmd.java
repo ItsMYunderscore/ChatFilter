@@ -18,9 +18,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.omg.PortableInterceptor.INACTIVE;
 
-import java.lang.reflect.Method;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static me.itsmyunderscore.ChatFilter.getFilter;
@@ -29,20 +27,25 @@ public class Filter_cmd implements CommandExecutor {
 
     private Filter filter;
     private ConfigFile config;
-    private String[] usage;
-    private String[] wordManagerUsage;
+    private final String[] usage;
+    private final String[] wordManagerUsage;
+    private String WMActivity;
+
+    public void checkWMActivity() {
+        if(Config.WORDMANAGER_CMD_ENABLED){
+            this.WMActivity = "&4&lINACTIVE";
+            Message.log("Word Manager is inactive - Can be turned on in config if no error is following");
+            Message.log("0x04");
+        } else {
+            this.WMActivity = "&a&lACTIVE";
+        }
+    }
 
     public Filter_cmd() {
         filter = getFilter();
         config = Config.getConfigFile();
-        String WMActivity;
-        if(Config.WORDMANAGER_CMD_ENABLED){
-            WMActivity = "&4&lINACTIVE";
-            Message.log("Word Manager is inactive - Can be turned on in config if on error is following");
-            Message.log("0x04");
-        } else {
-            WMActivity = "&a&lACTIVE";
-        }
+        checkWMActivity();
+
 
         usage = new String[]{
                 StringUtil.color("&8&m----------------------Filter----------------------"),
@@ -76,9 +79,17 @@ public class Filter_cmd implements CommandExecutor {
         } else {
             if (args.length == 1) {
                 if (args[0].equalsIgnoreCase("words")) {
+                    if(!Config.WORDMANAGER_CMD_ENABLED){
+                        player.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "[CF - WordManager]" + ChatColor.WHITE + " Word manager is inactive");
+                        return false;
+                    }
                     if (player.hasPermission("filter.words.list")) {
-                        Message.message(player, "&a&lThees are all words that are being filtered:");
-                        Message.sendList(player, (String[]) ForbiddenWords.forbidden_WORDS.toArray());
+                        StringBuilder words = new StringBuilder();
+                        for (String word : ForbiddenWords.forbidden_WORDS){
+                            words.append(word).append(", ");
+                        }
+                        Message.message(player, StringUtil.color("&a&lThese are all words that are being filtered:"));
+                        Message.message(player, words.toString());
                         return true;
                     } else {
                         Message.noPermission(player);
@@ -89,6 +100,7 @@ public class Filter_cmd implements CommandExecutor {
                 if (args[0].equalsIgnoreCase("words")) {
                     if(!Config.WORDMANAGER_CMD_ENABLED){
                         player.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "[CF - WordManager]" + ChatColor.WHITE + " Word manager is inactive");
+                        return false;
                     }
                     if(args[1].equalsIgnoreCase("?") || args[1].equalsIgnoreCase("help")){
                         if (player.hasPermission("filter.words.manage")){
@@ -110,6 +122,7 @@ public class Filter_cmd implements CommandExecutor {
                 if (args[0].equalsIgnoreCase("words") && args[1].equalsIgnoreCase("add")) {
                     if(!Config.WORDMANAGER_CMD_ENABLED){
                         player.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "[CF - WordManager]" + ChatColor.WHITE + " Word manager is inactive");
+                        return false;
                     }
                     if (player.hasPermission("filter.words.manage")) {
                         AtomicBoolean isFiltered = new AtomicBoolean(false);    //todo: check for errors
