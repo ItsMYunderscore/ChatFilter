@@ -30,6 +30,10 @@ public class ForbiddenWords {
         }
     }
 
+    public static void save(){
+        //todo
+    }
+
     public static ConfigFile getWordsFile() {
         return wordsFile;
     }

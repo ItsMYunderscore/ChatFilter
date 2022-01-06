@@ -10,6 +10,7 @@ package me.itsmyunderscore;
 import me.itsmyunderscore.commands.Debug_cmd;
 import me.itsmyunderscore.commands.Filter_cmd;
 import me.itsmyunderscore.config.Config;
+import me.itsmyunderscore.config.DevelopmentConfig;
 import me.itsmyunderscore.config.ForbiddenWords;
 import me.itsmyunderscore.events.ChatEvent;
 import me.itsmyunderscore.utils.Filter;
@@ -74,6 +75,7 @@ public final class ChatFilter extends JavaPlugin {
         try {
             new Config();
             new ForbiddenWords();
+            new DevelopmentConfig();
 
             filter = new Filter();
         } catch (Exception exception) {

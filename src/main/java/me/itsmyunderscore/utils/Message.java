@@ -39,4 +39,9 @@ public class Message {
 
         }
     }
+
+    public static void inDevelopment(Player player, String cmdName) {
+        player.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "This feature is currently in development, you are not allowed to use it!");
+        log(player.getDisplayName() + " just tried to issue this command: " + cmdName + " which is currently in development.");
+    }
 }
