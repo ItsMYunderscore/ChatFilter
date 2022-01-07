@@ -1,13 +1,16 @@
 name: ItsMY_ChatFilter
-version: 1.0.2
+version: 1.1.0
 main: me.itsmyunderscore.ChatFilter
 api-version: 1.17
 authors: [ ItsMYunderscore ]
 description: Basic ChatFilter
 website: https://itsmyunderscore.me/
 commands:
-  cfdebug:
-    name: Debug is switched by this
-
+  ChatFilter:
+    description: You will never know
   filter:
-    name: Not implemented yet
+    description: Main control command
+  cfdebug:
+    description: Debug is switched by this
+  cflang:
+    description: In game message editor

@@ -7,6 +7,8 @@
 
 package me.itsmyunderscore;
 
+import me.itsmyunderscore.commands.CFLang_cmd;
+import me.itsmyunderscore.commands.ChatFilter_cmd;
 import me.itsmyunderscore.commands.Debug_cmd;
 import me.itsmyunderscore.commands.Filter_cmd;
 import me.itsmyunderscore.config.Config;
@@ -70,6 +72,8 @@ public final class ChatFilter extends JavaPlugin {
         try {
             Objects.requireNonNull(getCommand("filter")).setExecutor(new Filter_cmd());
             Objects.requireNonNull(getCommand("cfdebug")).setExecutor(new Debug_cmd());
+            Objects.requireNonNull(getCommand("ChatFilter")).setExecutor(new ChatFilter_cmd());
+            Objects.requireNonNull(getCommand("CFLang")).setExecutor(new CFLang_cmd());
         } catch (Exception exception) {
             Message.log("Registering failed or not implemented yet - 0x02");
         }

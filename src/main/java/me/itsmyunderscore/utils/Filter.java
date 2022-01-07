@@ -22,8 +22,4 @@ public class Filter {
         return active;
     }
 
-    public void setActive(boolean active) {
-        this.active = active;
-    }
-
 }

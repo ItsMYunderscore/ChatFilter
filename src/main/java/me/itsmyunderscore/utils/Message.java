@@ -61,7 +61,11 @@ public class Message {
     }
 
     public static void CFManager(Player player, String msg) {
-        player.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "[CF - WordManager]" + ChatColor.WHITE + msg);
+        player.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "[CF - WordManager] " + ChatColor.WHITE + msg);
+    }
+
+    public static void usage(Player player, String msg) {
+        player.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "Usage! " + ChatColor.YELLOW + msg);
     }
 
 }

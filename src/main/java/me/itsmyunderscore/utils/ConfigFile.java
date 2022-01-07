@@ -72,8 +72,8 @@ public class ConfigFile extends YamlConfiguration {
         return super.getStringList(path).stream().map(StringUtil::color).collect(Collectors.toList());
     }
 
-    public File getFile() {
-        return file;
-    }
+    /*public File getFile() {
+        return file;                    Might come in handy
+    } */
 
 }

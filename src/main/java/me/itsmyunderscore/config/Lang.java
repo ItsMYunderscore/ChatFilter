@@ -4,9 +4,6 @@ import me.itsmyunderscore.utils.ConfigFile;
 import me.itsmyunderscore.utils.Message;
 import me.itsmyunderscore.utils.StringUtil;
 import org.bukkit.ChatColor;
-import org.bukkit.configuration.InvalidConfigurationException;
-
-import java.io.IOException;
 
 public class Lang {
     private static ConfigFile langFile;
@@ -33,10 +30,19 @@ public class Lang {
         } catch (Exception exception) {
             Message.log("Critical error! 1x04");
         }
-
     }
 
-    public static void reload(){
+    public static void save() {
+        langFile.set("phrases.msg_sent", MSG_SENT);
+        langFile.set("phrases.no_permission", NO_PERMISSION);
+        langFile.set("phrases.reload", RELOAD);
+        langFile.set("warnings.swearing", PLAYER_WARNING_SWEARING);
+        langFile.set("warnings.improper", PLAYER_WARNING_IMPROPER);
+
+        langFile.save();
+    }
+
+    public static void reload() {
         ConfigFile config = new ConfigFile("lang.yml");
 
         MSG_SENT = ChatColor.RED + "" + ChatColor.BOLD + "[CF] " + ChatColor.WHITE + StringUtil.color(config.getString("phrases.msg_sent"));

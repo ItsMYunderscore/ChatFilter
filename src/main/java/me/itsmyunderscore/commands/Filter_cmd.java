@@ -15,7 +15,6 @@ import me.itsmyunderscore.utils.ConfigFile;
 import me.itsmyunderscore.utils.Filter;
 import me.itsmyunderscore.utils.Message;
 import me.itsmyunderscore.utils.StringUtil;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -23,8 +22,6 @@ import org.bukkit.entity.Player;
 
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicBoolean;
-
-import static me.itsmyunderscore.ChatFilter.getFilter;
 
 public class Filter_cmd implements CommandExecutor {
 
@@ -41,23 +38,24 @@ public class Filter_cmd implements CommandExecutor {
 
         usage = new String[]{
                 StringUtil.color("&8&m----------------------Filter----------------------"),
-                StringUtil.color("&a&lNot all commands are fully functional right now!"),
-                StringUtil.color("&a&l/filter words - Filtered words manager (usable only if it's enabled in config)"),
+                StringUtil.color("&4Not all commands are fully functional right now!"),
+                StringUtil.color("&f/filter words - Filtered words manager"),
+                StringUtil.color("&f/filter settings - Command for settings"),
                 StringUtil.color("&8&m--------------------------------------------------")
         };
 
         wordManagerUsage = new String[]{
                 StringUtil.color("&8&m-------------------Word-manager-------------------"),
-                StringUtil.color("&a&lNot all commands are fully functional right now!"),
-                StringUtil.color("&a&l/filter words add - Adds word to forbidden"),
-                StringUtil.color("&a&l/filter words remove - Removes word to forbidden"),
+                StringUtil.color("&4Not all commands are fully functional right now!"),
+                StringUtil.color("&f/filter words add - Adds word to forbidden"),
+                StringUtil.color("&f/filter words remove - Removes word to forbidden"),
                 StringUtil.color("&8&m--------------------------------------------------")
         };
 
         settingsUsage = new String[]{
                 StringUtil.color("&8&m---------------------Settings---------------------"),
-                StringUtil.color("&a&lNot all commands are fully functional right now!"),
-                StringUtil.color("&a&l/filter settings toggle - Toggles Chat Filter's activity (on/off)"),
+                StringUtil.color("&4Not all commands are fully functional right now!"),
+                StringUtil.color("&f/filter settings toggle - Toggles Chat Filter's activity (on/off)"),
                 StringUtil.color("&8&m--------------------------------------------------")
         };
     }
@@ -127,8 +125,7 @@ public class Filter_cmd implements CommandExecutor {
                 }
             } else if (args.length == 2) {
                 if (args[0].equalsIgnoreCase("settings")) {
-                    if (player.hasPermission("filter.settings")) {
-                    } else {
+                    if (!player.hasPermission("filter.settings")) {
                         Message.noPermission(player);
                         return false;
                     }
@@ -154,7 +151,7 @@ public class Filter_cmd implements CommandExecutor {
 
                 if (args[0].equalsIgnoreCase("words")) {
                     if (!Config.WORDMANAGER_CMD_ENABLED) {
-                        player.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "[CF - WordManager]" + " Word manager is inactive");
+                        Message.CFManager(player, "Word manager is inactive");
                         return false;
                     }
 
@@ -166,7 +163,7 @@ public class Filter_cmd implements CommandExecutor {
                     }
                     if (args[1].equalsIgnoreCase("add")) {
                         if (player.hasPermission("filter.words.manage")) {
-                            player.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "Usage! " + ChatColor.YELLOW + "/filter words add [WORD]");
+                            Message.usage(player, "/filter words add [WORD]");
                             return true;
                         } else {
                             Message.noPermission(player);
@@ -174,7 +171,7 @@ public class Filter_cmd implements CommandExecutor {
                         }
                     } else if (args[1].equalsIgnoreCase("remove")) {
                         if (player.hasPermission("filter.words.manage")) {
-                            player.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "Usage! " + ChatColor.YELLOW + "/filter words remove [WORD]");
+                            Message.usage(player, "/filter words remove [WORD]");
                             return true;
                         } else {
                             Message.noPermission(player);
@@ -194,7 +191,7 @@ public class Filter_cmd implements CommandExecutor {
                             AtomicBoolean isFiltered = new AtomicBoolean(false);
 
                             if (ForbiddenWords.FORBIDDEN_WORDS.contains(args[2])) {
-                                Message.CFManager(player, "this word is already being filtered!");
+                                Message.CFManager(player, "This word is already being filtered!");
                                 isFiltered.set(true);
                             }
 
@@ -204,7 +201,8 @@ public class Filter_cmd implements CommandExecutor {
                             } else {
                                 ForbiddenWords.FORBIDDEN_WORDS.add(args[2]);
                                 ForbiddenWords.save();
-                                Message.CFManager(player, "word added!");
+                                Message.CFManager(player, "Word added!");
+                                return true;
                             }
                         } else {
                             Message.noPermission(player);
@@ -215,7 +213,7 @@ public class Filter_cmd implements CommandExecutor {
                             AtomicBoolean isFiltered = new AtomicBoolean(false);
 
                             if (!ForbiddenWords.FORBIDDEN_WORDS.contains(args[2])) {
-                                Message.CFManager(player, "this word is not being filtered!");
+                                Message.CFManager(player, "This word is not being filtered!");
                                 isFiltered.set(true);
                             }
 
@@ -225,7 +223,8 @@ public class Filter_cmd implements CommandExecutor {
                             } else {
                                 ForbiddenWords.FORBIDDEN_WORDS.remove(args[2]);
                                 ForbiddenWords.save();
-                                Message.CFManager(player, "word removed!");
+                                Message.CFManager(player, "Word removed!");
+                                return true;
                             }
                         } else {
                             Message.noPermission(player);
@@ -238,5 +237,13 @@ public class Filter_cmd implements CommandExecutor {
 
         Message.sendList(player, usage);
         return false;
+    }
+
+    public Filter getFilter() {
+        return filter;
+    }
+
+    public ConfigFile getConfig() {
+        return config;
     }
 }

@@ -44,7 +44,4 @@ public class ForbiddenWords {
         Message.debug("Forbidden words reloaded");
     }
 
-    public static ConfigFile getWordsFile() {
-        return wordsFile;
-    }
 }
