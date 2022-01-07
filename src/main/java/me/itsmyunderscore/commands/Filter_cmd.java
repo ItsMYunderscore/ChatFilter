@@ -111,17 +111,18 @@ public class Filter_cmd implements CommandExecutor {
                         Message.noPermission(player);
                         return false;
                     }
-                } else if (args[0].equalsIgnoreCase("reload")){
-                    if (player.hasPermission("filter.reload")){
+                } else if (args[0].equalsIgnoreCase("reload")) {
+                    if (player.hasPermission("filter.reload")) {
                         Config.reload();
-                        DevelopmentConfig.relaod();
+                        DevelopmentConfig.reload();
                         ForbiddenWords.reload();
                         Lang.reload();
 
-                        player.sendMessage();
+                        player.sendMessage(StringUtil.color(Lang.RELOAD));
+                        return true;
                     } else {
                         Message.noPermission(player);
-                        return  false;
+                        return false;
                     }
                 }
             } else if (args.length == 2) {
@@ -190,7 +191,7 @@ public class Filter_cmd implements CommandExecutor {
 
                     if (args[1].equalsIgnoreCase("add")) {
                         if (player.hasPermission("filter.words.manage")) {
-                            AtomicBoolean isFiltered = new AtomicBoolean(false);    //todo: check for errors
+                            AtomicBoolean isFiltered = new AtomicBoolean(false);
 
                             if (ForbiddenWords.FORBIDDEN_WORDS.contains(args[2])) {
                                 Message.CFManager(player, "this word is already being filtered!");
@@ -211,7 +212,7 @@ public class Filter_cmd implements CommandExecutor {
                         }
                     } else if (args[1].equalsIgnoreCase("remove")) {
                         if (player.hasPermission("filter.words.manage")) {
-                            AtomicBoolean isFiltered = new AtomicBoolean(false);    //todo: check for errors
+                            AtomicBoolean isFiltered = new AtomicBoolean(false);
 
                             if (!ForbiddenWords.FORBIDDEN_WORDS.contains(args[2])) {
                                 Message.CFManager(player, "this word is not being filtered!");

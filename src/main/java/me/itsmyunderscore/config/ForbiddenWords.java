@@ -35,7 +35,13 @@ public class ForbiddenWords {
     }
 
     public static void reload() {
-        FORBIDDEN_WORDS = wordsFile.getStringList("forbidden_words");
+        ConfigFile forbiddenWords = new ConfigFile("forbidden_words.yml");
+
+        FORBIDDEN_WORDS = forbiddenWords.getStringList("forbidden_words");
+
+        wordsFile = forbiddenWords;
+
+        Message.debug("Forbidden words reloaded");
     }
 
     public static ConfigFile getWordsFile() {

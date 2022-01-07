@@ -44,10 +44,16 @@ public class Config {
     }
 
     public static void reload() {
-        FILTER_ENABLED = configFile.getBoolean("options.filter.enabled");
-        DEBUG_ENABLED = configFile.getBoolean("options.filter.debug");
-        WORDMANAGER_CMD_ENABLED = configFile.getBoolean("options.filter.word_manager");
-        SAFE_MODE_ENABLED = configFile.getBoolean("options.filter.safe_mode");
+        ConfigFile config = new ConfigFile("config.yml");
+
+        FILTER_ENABLED = config.getBoolean("options.filter.enabled");
+        DEBUG_ENABLED = config.getBoolean("options.filter.debug");
+        WORDMANAGER_CMD_ENABLED = config.getBoolean("options.filter.word_manager");
+        SAFE_MODE_ENABLED = config.getBoolean("options.filter.safe_mode");
+
+        configFile = config;
+
+        Message.debug("Config reloaded");
     }
 
     public static ConfigFile getConfigFile() {

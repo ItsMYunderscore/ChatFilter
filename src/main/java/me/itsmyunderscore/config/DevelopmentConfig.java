@@ -24,10 +24,15 @@ public class DevelopmentConfig {
         }
     }
 
-    public static void relaod(){
-        DEVS = devConfigFile.getStringList("features.users");
-        DEVMODE_ENABLED = devConfigFile.getBoolean("features.enabled", false);
+    public static void reload(){
+        ConfigFile devConfig = new ConfigFile("development_config.yml");
 
+        DEVS = devConfig.getStringList("features.users");
+        DEVMODE_ENABLED = devConfig.getBoolean("features.enabled", false);
+
+        devConfigFile = devConfig;
+
+        Message.debug("Dev. Config reloaded");
     }
 
 }

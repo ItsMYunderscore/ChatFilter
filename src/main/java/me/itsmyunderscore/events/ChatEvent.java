@@ -50,6 +50,7 @@ public class ChatEvent implements Listener {
         if (regex(event.getMessage())) {
             player.sendMessage(StringUtil.color(Lang.PLAYER_WARNING_IMPROPER));
             event.setCancelled(true);
+            return;
         }
 
         for (String word : ForbiddenWords.FORBIDDEN_WORDS) {
