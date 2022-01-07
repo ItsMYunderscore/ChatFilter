@@ -10,6 +10,7 @@ package me.itsmyunderscore.commands;
 import me.itsmyunderscore.config.Config;
 import me.itsmyunderscore.config.DevelopmentConfig;
 import me.itsmyunderscore.config.ForbiddenWords;
+import me.itsmyunderscore.config.Lang;
 import me.itsmyunderscore.utils.ConfigFile;
 import me.itsmyunderscore.utils.Filter;
 import me.itsmyunderscore.utils.Message;
@@ -29,6 +30,7 @@ public class Filter_cmd implements CommandExecutor {
 
     private final String[] usage;
     private final String[] wordManagerUsage;
+    private final String[] settingsUsage;
     private final Filter filter;
     private final ConfigFile config;
 
@@ -48,10 +50,17 @@ public class Filter_cmd implements CommandExecutor {
                 StringUtil.color("&8&m-------------------Word-manager-------------------"),
                 StringUtil.color("&a&lNot all commands are fully functional right now!"),
                 StringUtil.color("&a&l/filter words add - Adds word to forbidden"),
+                StringUtil.color("&a&l/filter words remove - Removes word to forbidden"),
+                StringUtil.color("&8&m--------------------------------------------------")
+        };
+
+        settingsUsage = new String[]{
+                StringUtil.color("&8&m---------------------Settings---------------------"),
+                StringUtil.color("&a&lNot all commands are fully functional right now!"),
+                StringUtil.color("&a&l/filter settings toggle - Toggles Chat Filter's activity (on/off)"),
                 StringUtil.color("&8&m--------------------------------------------------")
         };
     }
-
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -79,7 +88,7 @@ public class Filter_cmd implements CommandExecutor {
             if (args.length == 1) {
                 if (args[0].equalsIgnoreCase("words")) {
                     if (!Config.WORDMANAGER_CMD_ENABLED) {
-                        player.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "[CF - WordManager]" + ChatColor.WHITE + " Word manager is inactive");
+                        Message.CFManager(player, "Word manager is inactive");
                         return false;
                     }
                     if (player.hasPermission("filter.words.list")) {
@@ -94,13 +103,60 @@ public class Filter_cmd implements CommandExecutor {
                         Message.noPermission(player);
                         return false;
                     }
-                }
-            } else if (args.length == 2) {
-                if (args[0].equalsIgnoreCase("words")) {
-                    if (!Config.WORDMANAGER_CMD_ENABLED) {
-                        player.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "[CF - WordManager]" + ChatColor.WHITE + " Word manager is inactive");
+                } else if (args[0].equalsIgnoreCase("settings")) {
+                    if (player.hasPermission("filter.settings")) {
+                        Message.isCFActive(player, "Chat Filter", Config.FILTER_ENABLED);
+                        return true;
+                    } else {
+                        Message.noPermission(player);
                         return false;
                     }
+                } else if (args[0].equalsIgnoreCase("reload")){
+                    if (player.hasPermission("filter.reload")){
+                        Config.reload();
+                        DevelopmentConfig.relaod();
+                        ForbiddenWords.reload();
+                        Lang.reload();
+
+                        player.sendMessage();
+                    } else {
+                        Message.noPermission(player);
+                        return  false;
+                    }
+                }
+            } else if (args.length == 2) {
+                if (args[0].equalsIgnoreCase("settings")) {
+                    if (player.hasPermission("filter.settings")) {
+                    } else {
+                        Message.noPermission(player);
+                        return false;
+                    }
+
+                    if (args[1].equalsIgnoreCase("?") || args[1].equalsIgnoreCase("help")) {
+                        Message.sendList(player, settingsUsage);
+                        return true;
+                    } else if (args[1].equalsIgnoreCase("toggle")) {
+                        if (Config.FILTER_ENABLED) {
+                            Config.FILTER_ENABLED = false;
+                            Config.save();
+                            Message.isCFActive(player, "Setting changed: Chat Filter", Config.FILTER_ENABLED);
+                            return true;
+                        } else {
+                            Config.FILTER_ENABLED = true;
+                            Config.save();
+                            Message.isCFActive(player, "Setting changed: Chat Filter", Config.FILTER_ENABLED);
+                            return false;
+                        }
+
+                    }
+                }
+
+                if (args[0].equalsIgnoreCase("words")) {
+                    if (!Config.WORDMANAGER_CMD_ENABLED) {
+                        player.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "[CF - WordManager]" + " Word manager is inactive");
+                        return false;
+                    }
+
                     if (args[1].equalsIgnoreCase("?") || args[1].equalsIgnoreCase("help")) {
                         if (player.hasPermission("filter.words.manage")) {
                             Message.sendList(player, wordManagerUsage);
@@ -115,39 +171,71 @@ public class Filter_cmd implements CommandExecutor {
                             Message.noPermission(player);
                             return false;
                         }
+                    } else if (args[1].equalsIgnoreCase("remove")) {
+                        if (player.hasPermission("filter.words.manage")) {
+                            player.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "Usage! " + ChatColor.YELLOW + "/filter words remove [WORD]");
+                            return true;
+                        } else {
+                            Message.noPermission(player);
+                            return false;
+                        }
                     }
                 }
             } else if (args.length == 3) {
-                if (args[0].equalsIgnoreCase("words") && args[1].equalsIgnoreCase("add")) {
+                if (args[0].equalsIgnoreCase("words")) {
                     if (!Config.WORDMANAGER_CMD_ENABLED) {
-                        player.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "[CF - WordManager]" + ChatColor.WHITE + " Word manager is inactive");
+                        Message.CFManager(player, "Word manager is inactive");
                         return false;
                     }
-                    if (player.hasPermission("filter.words.manage")) {
-                        AtomicBoolean isFiltered = new AtomicBoolean(false);    //todo: check for errors
+
+                    if (args[1].equalsIgnoreCase("add")) {
+                        if (player.hasPermission("filter.words.manage")) {
+                            AtomicBoolean isFiltered = new AtomicBoolean(false);    //todo: check for errors
 
                             if (ForbiddenWords.FORBIDDEN_WORDS.contains(args[2])) {
-                                player.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "[CF - WordManager]" + ChatColor.WHITE + " " + ChatColor.WHITE + "this word is already being filtered!");
+                                Message.CFManager(player, "this word is already being filtered!");
                                 isFiltered.set(true);
                             }
 
-                        if (isFiltered.get()) {
-                            isFiltered.set(false);
-                            return false;
+                            if (isFiltered.get()) {
+                                isFiltered.set(false);
+                                return false;
+                            } else {
+                                ForbiddenWords.FORBIDDEN_WORDS.add(args[2]);
+                                ForbiddenWords.save();
+                                Message.CFManager(player, "word added!");
+                            }
                         } else {
-                            ForbiddenWords.FORBIDDEN_WORDS.add(args[2]);
-                            ForbiddenWords.save();
-                            player.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "[CF - WordManager]" + ChatColor.WHITE + " " + ChatColor.WHITE + "word added!");
+                            Message.noPermission(player);
+                            return false;
                         }
-                    } else {
-                        Message.noPermission(player);
-                        return false;
+                    } else if (args[1].equalsIgnoreCase("remove")) {
+                        if (player.hasPermission("filter.words.manage")) {
+                            AtomicBoolean isFiltered = new AtomicBoolean(false);    //todo: check for errors
+
+                            if (!ForbiddenWords.FORBIDDEN_WORDS.contains(args[2])) {
+                                Message.CFManager(player, "this word is not being filtered!");
+                                isFiltered.set(true);
+                            }
+
+                            if (isFiltered.get()) {
+                                isFiltered.set(false);
+                                return false;
+                            } else {
+                                ForbiddenWords.FORBIDDEN_WORDS.remove(args[2]);
+                                ForbiddenWords.save();
+                                Message.CFManager(player, "word removed!");
+                            }
+                        } else {
+                            Message.noPermission(player);
+                            return false;
+                        }
                     }
                 }
             }
-
         }
 
+        Message.sendList(player, usage);
         return false;
     }
 }

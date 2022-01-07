@@ -12,6 +12,7 @@ import me.itsmyunderscore.commands.Filter_cmd;
 import me.itsmyunderscore.config.Config;
 import me.itsmyunderscore.config.DevelopmentConfig;
 import me.itsmyunderscore.config.ForbiddenWords;
+import me.itsmyunderscore.config.Lang;
 import me.itsmyunderscore.events.ChatEvent;
 import me.itsmyunderscore.utils.Filter;
 import me.itsmyunderscore.utils.Message;
@@ -79,6 +80,7 @@ public final class ChatFilter extends JavaPlugin {
             new Config();
             new ForbiddenWords();
             new DevelopmentConfig();
+            new Lang();
 
             filter = new Filter();
         } catch (Exception exception) {

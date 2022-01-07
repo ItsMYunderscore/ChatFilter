@@ -1,0 +1,8 @@
+phrases:
+  msg_sent: '&1%PLAYER% &f just tried to say &4%WORD%'
+  no_permission: '&4You do not have permission to use this command!'
+  reload: '&aReload completed!'
+
+warnings:
+  swearing: '&4Do not swear in chat!'
+  improper: '&4Do not send links or IP addresses!'

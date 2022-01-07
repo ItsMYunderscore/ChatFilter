@@ -8,13 +8,14 @@
 package me.itsmyunderscore.utils;
 
 import me.itsmyunderscore.config.Config;
+import me.itsmyunderscore.config.Lang;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 public class Message {
     public static void noPermission(Player player) {
-        message(player, ChatColor.RED + "You do not have permission to use this command!");
+        message(player, Lang.NO_PERMISSION);
     }
 
     public static void message(Player player, String string) {
@@ -44,4 +45,23 @@ public class Message {
         player.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "This feature is currently in development, you are not allowed to use it!");
         log(player.getDisplayName() + " just tried to issue this command: " + cmdName + " which is currently in development.");
     }
+
+    public static void CF(Player player, String msg) {
+        player.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "[CF] " + ChatColor.WHITE + msg);
+    }
+
+    public static void isCFActive(Player player, String msg, boolean isOn) {
+        String activity;
+        if (isOn) {
+            activity = "&aON";
+        } else {
+            activity = "&4OFF";
+        }
+        player.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "[CF] " + ChatColor.WHITE + msg + " is " + StringUtil.color(activity));
+    }
+
+    public static void CFManager(Player player, String msg) {
+        player.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "[CF - WordManager]" + ChatColor.WHITE + msg);
+    }
+
 }

@@ -10,15 +10,13 @@ package me.itsmyunderscore.config;
 import me.itsmyunderscore.utils.ConfigFile;
 import me.itsmyunderscore.utils.Message;
 
-import java.util.List;
-
 
 public class Config {
 
     public static boolean FILTER_ENABLED;
     public static boolean DEBUG_ENABLED;
     public static boolean WORDMANAGER_CMD_ENABLED;
-    public static List<String> EXEMPT_USERS;
+    public static boolean SAFE_MODE_ENABLED;
     private static ConfigFile configFile;
 
     public Config() {
@@ -27,8 +25,8 @@ public class Config {
 
             FILTER_ENABLED = config.getBoolean("options.filter.enabled");
             DEBUG_ENABLED = config.getBoolean("options.filter.debug");
-            WORDMANAGER_CMD_ENABLED = config.getBoolean("options.filter.wordmanager");
-            EXEMPT_USERS = config.getStringList("options.exempt.users");
+            WORDMANAGER_CMD_ENABLED = config.getBoolean("options.filter.word_manager");
+            SAFE_MODE_ENABLED = config.getBoolean("options.filter.safe_mode");
 
             configFile = config;
         } catch (Exception exception) {
@@ -36,8 +34,20 @@ public class Config {
         }
     }
 
-    public static void save(){
+    public static void save() {
+        configFile.set("options.filter.enabled", FILTER_ENABLED);
+        configFile.set("options.filter.debug", DEBUG_ENABLED);
+        configFile.set("options.filter.word_manager", WORDMANAGER_CMD_ENABLED);
+        configFile.set("options.filter.safe_mode", SAFE_MODE_ENABLED);
+
         configFile.save();
+    }
+
+    public static void reload() {
+        FILTER_ENABLED = configFile.getBoolean("options.filter.enabled");
+        DEBUG_ENABLED = configFile.getBoolean("options.filter.debug");
+        WORDMANAGER_CMD_ENABLED = configFile.getBoolean("options.filter.word_manager");
+        SAFE_MODE_ENABLED = configFile.getBoolean("options.filter.safe_mode");
     }
 
     public static ConfigFile getConfigFile() {

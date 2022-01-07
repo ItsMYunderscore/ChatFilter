@@ -18,6 +18,7 @@ public class Filter {
     }
 
     public boolean isActive() {
+        this.active = Config.FILTER_ENABLED;
         return active;
     }
 

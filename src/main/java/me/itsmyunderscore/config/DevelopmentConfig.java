@@ -23,4 +23,11 @@ public class DevelopmentConfig {
             Message.log("Critical error! 1x03");
         }
     }
+
+    public static void relaod(){
+        DEVS = devConfigFile.getStringList("features.users");
+        DEVMODE_ENABLED = devConfigFile.getBoolean("features.enabled", false);
+
+    }
+
 }

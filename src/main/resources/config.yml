@@ -2,8 +2,5 @@ options:
   filter:
     enabled: true
     debug: false
-    wordmanager: false
-  exempt:
-    enabled: true
-    users:
-      - 'yournamehere'
+    word_manager: false
+    safe_mode: true

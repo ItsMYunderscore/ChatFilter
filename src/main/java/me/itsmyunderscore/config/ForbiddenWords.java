@@ -34,6 +34,10 @@ public class ForbiddenWords {
         wordsFile.save();
     }
 
+    public static void reload() {
+        FORBIDDEN_WORDS = wordsFile.getStringList("forbidden_words");
+    }
+
     public static ConfigFile getWordsFile() {
         return wordsFile;
     }
