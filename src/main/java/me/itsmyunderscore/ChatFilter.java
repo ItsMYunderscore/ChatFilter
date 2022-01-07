@@ -20,7 +20,6 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Objects;
-import java.util.Random;
 
 
 public final class ChatFilter extends JavaPlugin {
@@ -30,6 +29,10 @@ public final class ChatFilter extends JavaPlugin {
 
     public static ChatFilter getInstance() {
         return instance;
+    }
+
+    public static Filter getFilter() {
+        return filter;
     }
 
     @Override
@@ -83,10 +86,6 @@ public final class ChatFilter extends JavaPlugin {
             Message.log("This error is critical! Try deleting all configuration files and restarting server");
             Message.log("Contact plugin developer by mailing him on: itsmyunderscore.sg@gmail.com ");
         }
-    }
-
-    public static Filter getFilter() {
-        return filter;
     }
 
     public void startupMessage(String s) {

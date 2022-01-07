@@ -14,15 +14,14 @@ import java.util.List;
 
 public class ForbiddenWords {
 
+    public static List<String> FORBIDDEN_WORDS;
     private static ConfigFile wordsFile;
-
-    public static List<String> forbidden_WORDS;
 
     public ForbiddenWords() {
         try {
             ConfigFile forbiddenWords = new ConfigFile("forbidden_words.yml");
 
-            forbidden_WORDS = forbiddenWords.getStringList("forbidden_words");
+            FORBIDDEN_WORDS = forbiddenWords.getStringList("forbidden_words");
 
             wordsFile = forbiddenWords;
         } catch (Exception exception) {
@@ -30,8 +29,9 @@ public class ForbiddenWords {
         }
     }
 
-    public static void save(){
-        //todo
+    public static void save() {
+        wordsFile.set("forbidden_words", FORBIDDEN_WORDS);
+        wordsFile.save();
     }
 
     public static ConfigFile getWordsFile() {

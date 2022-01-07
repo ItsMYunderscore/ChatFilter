@@ -8,8 +8,6 @@
 package me.itsmyunderscore.utils;
 
 import me.itsmyunderscore.ChatFilter;
-import me.itsmyunderscore.config.Config;
-import me.itsmyunderscore.config.ForbiddenWords;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -21,7 +19,7 @@ import java.util.stream.Collectors;
 
 public class ConfigFile extends YamlConfiguration {
 
-    private File file;
+    private final File file;
 
     public ConfigFile(String name) {
         this.file = new File(ChatFilter.getInstance().getDataFolder(), name);

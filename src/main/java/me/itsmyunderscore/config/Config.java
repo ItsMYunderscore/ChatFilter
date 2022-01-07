@@ -15,15 +15,11 @@ import java.util.List;
 
 public class Config {
 
-    private static ConfigFile configFile;
-
     public static boolean FILTER_ENABLED;
-
     public static boolean DEBUG_ENABLED;
-
     public static boolean WORDMANAGER_CMD_ENABLED;
-
     public static List<String> EXEMPT_USERS;
+    private static ConfigFile configFile;
 
     public Config() {
         try {
@@ -35,9 +31,13 @@ public class Config {
             EXEMPT_USERS = config.getStringList("options.exempt.users");
 
             configFile = config;
-        } catch (Exception exception){
+        } catch (Exception exception) {
             Message.log("Critical error! 1x01");
         }
+    }
+
+    public static void save(){
+        configFile.save();
     }
 
     public static ConfigFile getConfigFile() {

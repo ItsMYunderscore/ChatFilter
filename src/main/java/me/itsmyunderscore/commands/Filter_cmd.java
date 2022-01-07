@@ -27,10 +27,10 @@ import static me.itsmyunderscore.ChatFilter.getFilter;
 
 public class Filter_cmd implements CommandExecutor {
 
-    private Filter filter;
-    private ConfigFile config;
     private final String[] usage;
     private final String[] wordManagerUsage;
+    private final Filter filter;
+    private final ConfigFile config;
 
     public Filter_cmd() {
         filter = getFilter();
@@ -62,8 +62,8 @@ public class Filter_cmd implements CommandExecutor {
 
         Player player = (Player) sender;
 
-        if(DevelopmentConfig.DEVMODE_ENABLED){
-            if(!DevelopmentConfig.DEVS.contains(player.getName())){
+        if (DevelopmentConfig.DEVMODE_ENABLED) {
+            if (!DevelopmentConfig.DEVS.contains(player.getName())) {
                 Message.inDevelopment(player, label + Arrays.toString(args));
                 return true;
             }
@@ -84,7 +84,7 @@ public class Filter_cmd implements CommandExecutor {
                     }
                     if (player.hasPermission("filter.words.list")) {
                         StringBuilder words = new StringBuilder();
-                        for (String word : ForbiddenWords.forbidden_WORDS) {
+                        for (String word : ForbiddenWords.FORBIDDEN_WORDS) {
                             words.append(word).append(", ");
                         }
                         Message.message(player, StringUtil.color("&a&lThese are all words that are being filtered:"));
@@ -125,18 +125,18 @@ public class Filter_cmd implements CommandExecutor {
                     }
                     if (player.hasPermission("filter.words.manage")) {
                         AtomicBoolean isFiltered = new AtomicBoolean(false);    //todo: check for errors
-                        ForbiddenWords.forbidden_WORDS.forEach(word -> {
-                            if (args[2].contains(word)) {
+
+                            if (ForbiddenWords.FORBIDDEN_WORDS.contains(args[2])) {
                                 player.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "[CF - WordManager]" + ChatColor.WHITE + " " + ChatColor.WHITE + "this word is already being filtered!");
                                 isFiltered.set(true);
                             }
-                        });
+
                         if (isFiltered.get()) {
                             isFiltered.set(false);
                             return false;
                         } else {
-                            ForbiddenWords.forbidden_WORDS.add(args[2]);
-                            //new ForbiddenWords(); todo: saving is not working - make method for it
+                            ForbiddenWords.FORBIDDEN_WORDS.add(args[2]);
+                            ForbiddenWords.save();
                             player.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "[CF - WordManager]" + ChatColor.WHITE + " " + ChatColor.WHITE + "word added!");
                         }
                     } else {

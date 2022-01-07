@@ -7,11 +7,9 @@ import java.util.List;
 
 public class DevelopmentConfig {
 
-    private static ConfigFile devConfigFile;
-
     public static List<String> DEVS;
-
     public static boolean DEVMODE_ENABLED;
+    public static ConfigFile devConfigFile;
 
     public DevelopmentConfig() {
         try {
@@ -21,7 +19,7 @@ public class DevelopmentConfig {
             DEVMODE_ENABLED = devConfig.getBoolean("features.enabled", false);
 
             devConfigFile = devConfig;
-        } catch (Exception exception){
+        } catch (Exception exception) {
             Message.log("Critical error! 1x03");
         }
     }

@@ -11,14 +11,15 @@ public class Debug_cmd implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if(!(sender instanceof Player)) return true;
+        if (!(sender instanceof Player)) return true;
         Player player = (Player) sender;
-        if(!player.hasPermission("filter.debug")) return true;
-        if(label.equalsIgnoreCase("cfdebug")){
-            if(Config.DEBUG_ENABLED){
+        if (!player.hasPermission("filter.debug")) return true;
+        if (label.equalsIgnoreCase("cfdebug")) {
+            if (Config.DEBUG_ENABLED) {
                 Config.DEBUG_ENABLED = false;
+                Config.save();
                 player.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "DEBUG " + ChatColor.YELLOW + "Disabled");
-            }else{
+            } else {
                 Config.DEBUG_ENABLED = true;
                 player.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "DEBUG " + ChatColor.GREEN + "Enabled");
             }

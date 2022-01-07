@@ -39,7 +39,7 @@ public class ChatEvent implements Listener {
         Message.debug("Player is not bypassed");
 
         String filteredWord = null;
-        for (String word : ForbiddenWords.forbidden_WORDS) {
+        for (String word : ForbiddenWords.FORBIDDEN_WORDS) {
             Message.debug("Checking for this " + word);
             if (message.toLowerCase().contains(word)) {
                 filteredWord = message;
