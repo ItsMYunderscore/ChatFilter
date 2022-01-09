@@ -8,19 +8,13 @@
 package me.itsmyunderscore.commands;
 
 import me.itsmyunderscore.config.Config;
-import me.itsmyunderscore.config.DevelopmentConfig;
 import me.itsmyunderscore.config.ForbiddenWords;
-import me.itsmyunderscore.config.Lang;
-import me.itsmyunderscore.utils.ConfigFile;
-import me.itsmyunderscore.utils.Filter;
-import me.itsmyunderscore.utils.Message;
-import me.itsmyunderscore.utils.StringUtil;
+import me.itsmyunderscore.utils.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Filter_cmd implements CommandExecutor {
@@ -69,175 +63,172 @@ public class Filter_cmd implements CommandExecutor {
 
         Player player = (Player) sender;
 
-        if (DevelopmentConfig.DEVMODE_ENABLED) {
-            if (!DevelopmentConfig.DEVS.contains(player.getName())) {
-                Message.inDevelopment(player, label + Arrays.toString(args));
-                return true;
-            }
-        }
-
         if (!player.hasPermission("filter.filter")) {
             Message.noPermission(player);
             return true;
-        } else if (args.length == 0) {
+        }
+        if (args.length == 0) {
             Message.sendList(player, usage);
             return true;
-        } else {
-            if (args.length == 1) {
-                if (args[0].equalsIgnoreCase("words")) {
-                    if (!Config.WORDMANAGER_CMD_ENABLED) {
-                        Message.CFManager(player, "Word manager is inactive");
-                        return false;
-                    }
-                    if (player.hasPermission("filter.words.list")) {
-                        StringBuilder words = new StringBuilder();
-                        for (String word : ForbiddenWords.FORBIDDEN_WORDS) {
-                            words.append(word).append(", ");
+        }
+
+        switch (args[0].toLowerCase()) {
+            case "words": {
+                if (!Config.WORDMANAGER_CMD_ENABLED) {
+                    Message.CFManager(player, "Word manager is inactive");
+                    return false;
+                }
+                switch (args.length) {
+                    case 1: {
+                        if (player.hasPermission("filter.words.list")) {
+                            StringBuilder words = new StringBuilder();
+                            for (String word : ForbiddenWords.FORBIDDEN_WORDS) {
+                                words.append(word).append(", ");
+                            }
+                            Message.message(player, StringUtil.color("&a&lThese are all words that are being filtered:"));
+                            Message.message(player, words.toString());
+                            return true;
+                        } else {
+                            Message.noPermission(player);
+                            return false;
                         }
-                        Message.message(player, StringUtil.color("&a&lThese are all words that are being filtered:"));
-                        Message.message(player, words.toString());
-                        return true;
-                    } else {
-                        Message.noPermission(player);
+                    }
+
+                    case 2: {
+                        if (args[1].equalsIgnoreCase("?") || args[1].equalsIgnoreCase("help")) {
+                            if (player.hasPermission("filter.words.manage")) {
+                                Message.sendList(player, wordManagerUsage);
+                                return true;
+                            }
+                        }
+                        if (args[1].equalsIgnoreCase("add")) {
+                            if (player.hasPermission("filter.words.manage")) {
+                                Message.usage(player, "/filter words add [WORD]");
+                                return true;
+                            } else {
+                                Message.noPermission(player);
+                                return false;
+                            }
+                        } else if (args[1].equalsIgnoreCase("remove")) {
+                            if (player.hasPermission("filter.words.manage")) {
+                                Message.usage(player, "/filter words remove [WORD]");
+                                return true;
+                            } else {
+                                Message.noPermission(player);
+                                return false;
+                            }
+                        }
+
+                    }
+
+                    case 3:
+                        if (args[1].equalsIgnoreCase("add")) {
+                            if (player.hasPermission("filter.words.manage")) {
+                                AtomicBoolean isFiltered = new AtomicBoolean(false);
+
+                                if (ForbiddenWords.FORBIDDEN_WORDS.contains(args[2])) {
+                                    Message.CFManager(player, "This word is already being filtered!");
+                                    isFiltered.set(true);
+                                }
+
+                                if (isFiltered.get()) {
+                                    isFiltered.set(false);
+                                    return false;
+                                } else {
+                                    ForbiddenWords.FORBIDDEN_WORDS.add(args[2]);
+                                    ForbiddenWords.save();
+                                    Message.CFManager(player, "Word added!");
+                                    return true;
+                                }
+                            } else {
+                                Message.noPermission(player);
+                                return false;
+                            }
+                        } else if (args[1].equalsIgnoreCase("remove")) {
+                            if (player.hasPermission("filter.words.manage")) {
+                                AtomicBoolean isFiltered = new AtomicBoolean(false);
+
+                                if (!ForbiddenWords.FORBIDDEN_WORDS.contains(args[2])) {
+                                    Message.CFManager(player, "This word is not being filtered!");
+                                    isFiltered.set(true);
+                                }
+
+                                if (isFiltered.get()) {
+                                    isFiltered.set(false);
+                                    return false;
+                                } else {
+                                    ForbiddenWords.FORBIDDEN_WORDS.remove(args[2]);
+                                    ForbiddenWords.save();
+                                    Message.CFManager(player, "Word removed!");
+                                    return true;
+                                }
+                            } else {
+                                Message.noPermission(player);
+                                return false;
+                            }
+                        }
+
+                    default: {
+                        Message.usage(player, "Check /filter words ? for help");
                         return false;
                     }
-                } else if (args[0].equalsIgnoreCase("settings")) {
-                    if (player.hasPermission("filter.settings")) {
+                }
+
+
+            }
+            case "settings": {
+                if (!player.hasPermission("filter.settings")) {
+                    Message.noPermission(player);
+                    return false;
+                }
+                switch (args.length) {
+                    case 1: {
                         Message.isCFActive(player, "Chat Filter", Config.FILTER_ENABLED);
                         return true;
-                    } else {
-                        Message.noPermission(player);
-                        return false;
-                    }
-                } else if (args[0].equalsIgnoreCase("reload")) {
-                    if (player.hasPermission("filter.reload")) {
-                        Config.reload();
-                        DevelopmentConfig.reload();
-                        ForbiddenWords.reload();
-                        Lang.reload();
-
-                        player.sendMessage(StringUtil.color(Lang.RELOAD));
-                        return true;
-                    } else {
-                        Message.noPermission(player);
-                        return false;
-                    }
-                }
-            } else if (args.length == 2) {
-                if (args[0].equalsIgnoreCase("settings")) {
-                    if (!player.hasPermission("filter.settings")) {
-                        Message.noPermission(player);
-                        return false;
                     }
 
-                    if (args[1].equalsIgnoreCase("?") || args[1].equalsIgnoreCase("help")) {
-                        Message.sendList(player, settingsUsage);
-                        return true;
-                    } else if (args[1].equalsIgnoreCase("toggle")) {
-                        if (Config.FILTER_ENABLED) {
-                            Config.FILTER_ENABLED = false;
-                            Config.save();
-                            Message.isCFActive(player, "Setting changed: Chat Filter", Config.FILTER_ENABLED);
+                    case 2: {
+                        if (args[1].equalsIgnoreCase("?") || args[1].equalsIgnoreCase("help")) {
+                            Message.sendList(player, settingsUsage);
                             return true;
-                        } else {
-                            Config.FILTER_ENABLED = true;
-                            Config.save();
-                            Message.isCFActive(player, "Setting changed: Chat Filter", Config.FILTER_ENABLED);
-                            return false;
-                        }
-
-                    }
-                }
-
-                if (args[0].equalsIgnoreCase("words")) {
-                    if (!Config.WORDMANAGER_CMD_ENABLED) {
-                        Message.CFManager(player, "Word manager is inactive");
-                        return false;
-                    }
-
-                    if (args[1].equalsIgnoreCase("?") || args[1].equalsIgnoreCase("help")) {
-                        if (player.hasPermission("filter.words.manage")) {
-                            Message.sendList(player, wordManagerUsage);
-                            return true;
-                        }
-                    }
-                    if (args[1].equalsIgnoreCase("add")) {
-                        if (player.hasPermission("filter.words.manage")) {
-                            Message.usage(player, "/filter words add [WORD]");
-                            return true;
-                        } else {
-                            Message.noPermission(player);
-                            return false;
-                        }
-                    } else if (args[1].equalsIgnoreCase("remove")) {
-                        if (player.hasPermission("filter.words.manage")) {
-                            Message.usage(player, "/filter words remove [WORD]");
-                            return true;
-                        } else {
-                            Message.noPermission(player);
-                            return false;
-                        }
-                    }
-                }
-            } else if (args.length == 3) {
-                if (args[0].equalsIgnoreCase("words")) {
-                    if (!Config.WORDMANAGER_CMD_ENABLED) {
-                        Message.CFManager(player, "Word manager is inactive");
-                        return false;
-                    }
-
-                    if (args[1].equalsIgnoreCase("add")) {
-                        if (player.hasPermission("filter.words.manage")) {
-                            AtomicBoolean isFiltered = new AtomicBoolean(false);
-
-                            if (ForbiddenWords.FORBIDDEN_WORDS.contains(args[2])) {
-                                Message.CFManager(player, "This word is already being filtered!");
-                                isFiltered.set(true);
-                            }
-
-                            if (isFiltered.get()) {
-                                isFiltered.set(false);
-                                return false;
-                            } else {
-                                ForbiddenWords.FORBIDDEN_WORDS.add(args[2]);
-                                ForbiddenWords.save();
-                                Message.CFManager(player, "Word added!");
+                        } else if (args[1].equalsIgnoreCase(("toggle"))) {
+                            if (Config.FILTER_ENABLED) {
+                                Config.FILTER_ENABLED = false;
+                                Config.save();
+                                Message.isCFActive(player, "Setting changed: Chat Filter", Config.FILTER_ENABLED);
                                 return true;
-                            }
-                        } else {
-                            Message.noPermission(player);
-                            return false;
-                        }
-                    } else if (args[1].equalsIgnoreCase("remove")) {
-                        if (player.hasPermission("filter.words.manage")) {
-                            AtomicBoolean isFiltered = new AtomicBoolean(false);
-
-                            if (!ForbiddenWords.FORBIDDEN_WORDS.contains(args[2])) {
-                                Message.CFManager(player, "This word is not being filtered!");
-                                isFiltered.set(true);
-                            }
-
-                            if (isFiltered.get()) {
-                                isFiltered.set(false);
-                                return false;
                             } else {
-                                ForbiddenWords.FORBIDDEN_WORDS.remove(args[2]);
-                                ForbiddenWords.save();
-                                Message.CFManager(player, "Word removed!");
-                                return true;
+                                Config.FILTER_ENABLED = true;
+                                Config.save();
+                                Message.isCFActive(player, "Setting changed: Chat Filter", Config.FILTER_ENABLED);
+                                return false;
                             }
-                        } else {
-                            Message.noPermission(player);
-                            return false;
+
                         }
+                    }
+
+                    default: {
+                        Message.usage(player, "Check /filter settings ? for help");
+                        return true;
                     }
                 }
             }
+            case "reload": {
+                if (player.hasPermission("filter.reload")) {
+                    ConfigUtil.reload(player);
+                    return true;
+                } else {
+                    Message.noPermission(player);
+                    return false;
+                }
+            }
+            default: {
+                Message.sendList(player, usage);
+                return true;
+            }
         }
-
-        Message.sendList(player, usage);
-        return false;
     }
+
 
     public Filter getFilter() {
         return filter;

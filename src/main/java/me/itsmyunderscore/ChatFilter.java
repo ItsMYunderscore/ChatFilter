@@ -2,7 +2,7 @@
  * This plugin has been created by ItsMYunderscore.
  * It is prohibited from any use without written agreement with the author.
  *
- * Copyright (c) ItsMYunderscore 2021.
+ * Copyright (c) ItsMYunderscore 2022.
  */
 
 package me.itsmyunderscore;
@@ -12,10 +12,10 @@ import me.itsmyunderscore.commands.ChatFilter_cmd;
 import me.itsmyunderscore.commands.Debug_cmd;
 import me.itsmyunderscore.commands.Filter_cmd;
 import me.itsmyunderscore.config.Config;
-import me.itsmyunderscore.config.DevelopmentConfig;
 import me.itsmyunderscore.config.ForbiddenWords;
 import me.itsmyunderscore.config.Lang;
 import me.itsmyunderscore.events.ChatEvent;
+import me.itsmyunderscore.utils.ConfigUtil;
 import me.itsmyunderscore.utils.Filter;
 import me.itsmyunderscore.utils.Message;
 import org.bukkit.Bukkit;
@@ -48,12 +48,16 @@ public final class ChatFilter extends JavaPlugin {
         registerListeners();
         registerCommands();
 
-        startupMessage("Loaded...           Please, watch out for any critical errors");
+        logMessage("Loaded...           Please, watch out for any critical errors");
     }
 
     @Override
     public void onDisable() {
         instance = null;
+
+        ConfigUtil.save();
+
+        logMessage("Plugin disabled             Thanks for using our plugin");
     }
 
     private void registerListeners() {
@@ -83,7 +87,6 @@ public final class ChatFilter extends JavaPlugin {
         try {
             new Config();
             new ForbiddenWords();
-            new DevelopmentConfig();
             new Lang();
 
             filter = new Filter();
@@ -94,12 +97,11 @@ public final class ChatFilter extends JavaPlugin {
         }
     }
 
-    public void startupMessage(String s) {
+    private void logMessage(String msg) {
         Message.log("--------------------------------------------");
         Message.log("  ");
-        Message.log("[ItsMY_ChatFilter] - " + s);
+        Message.log("[ChatFilter by ItsMY_] - " + msg);
         Message.log("  ");
         Message.log("--------------------------------------------");
     }
 }
-

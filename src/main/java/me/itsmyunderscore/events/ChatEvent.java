@@ -2,11 +2,12 @@
  * This plugin has been created by ItsMYunderscore.
  * It is prohibited from any use without written agreement with the author.
  *
- * Copyright (c) ItsMYunderscore 2021.
+ * Copyright (c) ItsMYunderscore 2022.
  */
 
 package me.itsmyunderscore.events;
 
+import me.itsmyunderscore.config.Config;
 import me.itsmyunderscore.config.ForbiddenWords;
 import me.itsmyunderscore.config.Lang;
 import me.itsmyunderscore.utils.Filter;
@@ -89,6 +90,14 @@ public class ChatEvent implements Listener {
 
         Matcher matcher = pattern.matcher(msg);
         Matcher matcher1 = pattern1.matcher(msg);
+
+        if (Config.ALLOW_CERTAIN_WEBSITES) {
+            for (String web : ForbiddenWords.ALLOWED_WEBSITES) {
+                if (msg.contains(web)) {
+                    return false;
+                }
+            }
+        }
 
         return matcher.find() || matcher1.find();
     }

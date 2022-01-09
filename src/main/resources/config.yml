@@ -3,4 +3,6 @@ options:
     enabled: true
     debug: false
     word_manager: false
-    safe_mode: true
+    safe_mode:
+      enabled: true
+      allow_my_websites: true

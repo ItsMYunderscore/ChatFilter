@@ -2,7 +2,7 @@
  * This plugin has been created by ItsMYunderscore.
  * It is prohibited from any use without written agreement with the author.
  *
- * Copyright (c) ItsMYunderscore 2021.
+ * Copyright (c) ItsMYunderscore 2022.
  */
 
 package me.itsmyunderscore.config;
@@ -15,6 +15,7 @@ import java.util.List;
 public class ForbiddenWords {
 
     public static List<String> FORBIDDEN_WORDS;
+    public static List<String> ALLOWED_WEBSITES;
     private static ConfigFile wordsFile;
 
     public ForbiddenWords() {
@@ -22,6 +23,7 @@ public class ForbiddenWords {
             ConfigFile forbiddenWords = new ConfigFile("forbidden_words.yml");
 
             FORBIDDEN_WORDS = forbiddenWords.getStringList("forbidden_words");
+            ALLOWED_WEBSITES = forbiddenWords.getStringList("allowed_websites");
 
             wordsFile = forbiddenWords;
         } catch (Exception exception) {
@@ -31,6 +33,7 @@ public class ForbiddenWords {
 
     public static void save() {
         wordsFile.set("forbidden_words", FORBIDDEN_WORDS);
+        wordsFile.set("allowed_websites", ALLOWED_WEBSITES);
         wordsFile.save();
     }
 
@@ -38,6 +41,7 @@ public class ForbiddenWords {
         ConfigFile forbiddenWords = new ConfigFile("forbidden_words.yml");
 
         FORBIDDEN_WORDS = forbiddenWords.getStringList("forbidden_words");
+        ALLOWED_WEBSITES = forbiddenWords.getStringList("allowed_websites");
 
         wordsFile = forbiddenWords;
 

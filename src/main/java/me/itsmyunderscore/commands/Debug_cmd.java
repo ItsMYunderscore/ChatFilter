@@ -1,3 +1,10 @@
+/*
+ * This plugin has been created by ItsMYunderscore.
+ * It is prohibited from any use without written agreement with the author.
+ *
+ * Copyright (c) ItsMYunderscore 2022.
+ */
+
 package me.itsmyunderscore.commands;
 
 import me.itsmyunderscore.config.Config;
@@ -17,13 +24,13 @@ public class Debug_cmd implements CommandExecutor {
         if (label.equalsIgnoreCase("cfdebug")) {
             if (Config.DEBUG_ENABLED) {
                 Config.DEBUG_ENABLED = false;
-                Config.save();
                 player.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "DEBUG " + ChatColor.YELLOW + "Disabled");
             } else {
                 Config.DEBUG_ENABLED = true;
                 player.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "DEBUG " + ChatColor.GREEN + "Enabled");
             }
         }
+        Config.save();
         return false;
     }
 }

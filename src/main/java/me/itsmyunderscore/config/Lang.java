@@ -1,3 +1,10 @@
+/*
+ * This plugin has been created by ItsMYunderscore.
+ * It is prohibited from any use without written agreement with the author.
+ *
+ * Copyright (c) ItsMYunderscore 2022.
+ */
+
 package me.itsmyunderscore.config;
 
 import me.itsmyunderscore.utils.ConfigFile;

@@ -1,9 +1,9 @@
-name: ItsMY_ChatFilter
+name: ChatFilter
 version: 1.1.0
 main: me.itsmyunderscore.ChatFilter
 api-version: 1.17
 authors: [ ItsMYunderscore ]
-description: Basic ChatFilter
+description: Chat Filter by ItsMYunderscore
 website: https://itsmyunderscore.me/
 commands:
   ChatFilter:

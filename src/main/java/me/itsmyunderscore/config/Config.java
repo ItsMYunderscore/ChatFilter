@@ -2,7 +2,7 @@
  * This plugin has been created by ItsMYunderscore.
  * It is prohibited from any use without written agreement with the author.
  *
- * Copyright (c) ItsMYunderscore 2021.
+ * Copyright (c) ItsMYunderscore 2022.
  */
 
 package me.itsmyunderscore.config;
@@ -17,6 +17,7 @@ public class Config {
     public static boolean DEBUG_ENABLED;
     public static boolean WORDMANAGER_CMD_ENABLED;
     public static boolean SAFE_MODE_ENABLED;
+    public static boolean ALLOW_CERTAIN_WEBSITES;
     private static ConfigFile configFile;
 
     public Config() {
@@ -26,7 +27,8 @@ public class Config {
             FILTER_ENABLED = config.getBoolean("options.filter.enabled");
             DEBUG_ENABLED = config.getBoolean("options.filter.debug");
             WORDMANAGER_CMD_ENABLED = config.getBoolean("options.filter.word_manager");
-            SAFE_MODE_ENABLED = config.getBoolean("options.filter.safe_mode");
+            SAFE_MODE_ENABLED = config.getBoolean("options.filter.safe_mode.enabled");
+            ALLOW_CERTAIN_WEBSITES = config.getBoolean("options.filter.safe_mode.allow_my_websites");
 
             configFile = config;
         } catch (Exception exception) {
@@ -38,7 +40,8 @@ public class Config {
         configFile.set("options.filter.enabled", FILTER_ENABLED);
         configFile.set("options.filter.debug", DEBUG_ENABLED);
         configFile.set("options.filter.word_manager", WORDMANAGER_CMD_ENABLED);
-        configFile.set("options.filter.safe_mode", SAFE_MODE_ENABLED);
+        configFile.set("options.filter.safe_mode.enabled", SAFE_MODE_ENABLED);
+        configFile.set("options.filter.safe_mode.allow_my_websites", ALLOW_CERTAIN_WEBSITES);
 
         configFile.save();
     }
@@ -49,7 +52,8 @@ public class Config {
         FILTER_ENABLED = config.getBoolean("options.filter.enabled");
         DEBUG_ENABLED = config.getBoolean("options.filter.debug");
         WORDMANAGER_CMD_ENABLED = config.getBoolean("options.filter.word_manager");
-        SAFE_MODE_ENABLED = config.getBoolean("options.filter.safe_mode");
+        SAFE_MODE_ENABLED = config.getBoolean("options.filter.safe_mode.enabled");
+        ALLOW_CERTAIN_WEBSITES = config.getBoolean("options.filter.safe_mode.allow_my_websites");
 
         configFile = config;
 

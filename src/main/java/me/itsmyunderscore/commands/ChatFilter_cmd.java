@@ -1,3 +1,10 @@
+/*
+ * This plugin has been created by ItsMYunderscore.
+ * It is prohibited from any use without written agreement with the author.
+ *
+ * Copyright (c) ItsMYunderscore 2022.
+ */
+
 package me.itsmyunderscore.commands;
 
 import me.itsmyunderscore.utils.Message;
@@ -12,31 +19,45 @@ public class ChatFilter_cmd implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (args.length == 1) {
-            if (!(sender instanceof Player) && !args[0].equalsIgnoreCase("changelog")) {
-                Message.log("Chat Filter by ItsMYunderscore");
-                return true;
-            }
+        switch (args.length) {
+            case 1: {
+                if (!(sender instanceof Player) && !args[0].equalsIgnoreCase("changelog")) {
+                    Message.log("Chat Filter by ItsMYunderscore");
+                    return true;
+                }
 
-            Player player = null;
-            if (sender instanceof Player) {
-                player = (Player) sender;
-            }
+                Player player = null;
+                if (sender instanceof Player) {
+                    player = (Player) sender;
+                }
 
-            if (args[0].equalsIgnoreCase("?") || args[0].equalsIgnoreCase("help")) {
-                player.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "Use " + ChatColor.YELLOW + "/filter");
-                return true;
-            } else if (args[0].equalsIgnoreCase("changelog")) {
-                changeLog(player);
+                if (args[0].equalsIgnoreCase("?") || args[0].equalsIgnoreCase("help")) {
+                    player.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "Use " + ChatColor.YELLOW + "/filter");
+                    return true;
+                } else if (args[0].equalsIgnoreCase("changelog")) {
+                    changeLog(player);
+                }
             }
-        }
-        if (sender instanceof Player) {
-            Player player = (Player) sender;
-            player.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "Chat Filter by " + ChatColor.YELLOW + "ItsMYunderscore");
-            return true;
-        } else {
-            Message.log("Chat Filter by ItsMYunderscore");
-            return false;
+            case 0: {
+                if (sender instanceof Player) {
+                    Player player = (Player) sender;
+                    player.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "Chat Filter by " + ChatColor.YELLOW + "ItsMYunderscore");
+                    return true;
+                } else {
+                    Message.log("Chat Filter by ItsMYunderscore");
+                    return false;
+                }
+            }
+            default: {
+                if (sender instanceof Player) {
+                    Player player = (Player) sender;
+                    player.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "Chat Filter by " + ChatColor.YELLOW + "ItsMYunderscore");
+                    return true;
+                } else {
+                    Message.log("Chat Filter by ItsMYunderscore");
+                    return false;
+                }
+            }
         }
     }
 

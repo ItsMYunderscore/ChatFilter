@@ -1,5 +1,7 @@
-forbidden_words:  #This section is for you to put vulgarities in
+forbidden_words: #This section is for you to put vulgarities in
   - 'Vulgarity1'
   - 'Vulgarity2'
   - 'Vulgarity3'
   - 'and_so_on'
+allowed_websites:
+  - 'itsmyunderscore.me'
