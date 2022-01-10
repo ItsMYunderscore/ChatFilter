@@ -73,13 +73,13 @@ public class Filter_cmd implements CommandExecutor {
         }
 
         switch (args[0].toLowerCase()) {
-            case "words": {
+            case "words":
                 if (!Config.WORDMANAGER_CMD_ENABLED) {
                     Message.CFManager(player, "Word manager is inactive");
                     return false;
                 }
                 switch (args.length) {
-                    case 1: {
+                    case 1:
                         if (player.hasPermission("filter.words.list")) {
                             StringBuilder words = new StringBuilder();
                             for (String word : ForbiddenWords.FORBIDDEN_WORDS) {
@@ -92,9 +92,9 @@ public class Filter_cmd implements CommandExecutor {
                             Message.noPermission(player);
                             return false;
                         }
-                    }
 
-                    case 2: {
+
+                    case 2:
                         if (args[1].equalsIgnoreCase("?") || args[1].equalsIgnoreCase("help")) {
                             if (player.hasPermission("filter.words.manage")) {
                                 Message.sendList(player, wordManagerUsage);
@@ -119,7 +119,6 @@ public class Filter_cmd implements CommandExecutor {
                             }
                         }
 
-                    }
 
                     case 3:
                         if (args[1].equalsIgnoreCase("add")) {
@@ -168,26 +167,25 @@ public class Filter_cmd implements CommandExecutor {
                             }
                         }
 
-                    default: {
+                    default:
                         Message.usage(player, "Check /filter words ? for help");
                         return false;
-                    }
+
                 }
 
 
-            }
-            case "settings": {
+            case "settings":
                 if (!player.hasPermission("filter.settings")) {
                     Message.noPermission(player);
                     return false;
                 }
                 switch (args.length) {
-                    case 1: {
+                    case 1:
                         Message.isCFActive(player, "Chat Filter", Config.FILTER_ENABLED);
                         return true;
-                    }
 
-                    case 2: {
+
+                    case 2:
                         if (args[1].equalsIgnoreCase("?") || args[1].equalsIgnoreCase("help")) {
                             Message.sendList(player, settingsUsage);
                             return true;
@@ -205,15 +203,15 @@ public class Filter_cmd implements CommandExecutor {
                             }
 
                         }
-                    }
 
-                    default: {
+
+                    default:
                         Message.usage(player, "Check /filter settings ? for help");
                         return true;
-                    }
+
                 }
-            }
-            case "reload": {
+
+            case "reload":
                 if (player.hasPermission("filter.reload")) {
                     ConfigUtil.reload(player);
                     return true;
@@ -221,11 +219,11 @@ public class Filter_cmd implements CommandExecutor {
                     Message.noPermission(player);
                     return false;
                 }
-            }
-            default: {
+
+            default:
                 Message.sendList(player, usage);
                 return true;
-            }
+
         }
     }
 

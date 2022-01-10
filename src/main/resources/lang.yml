@@ -1,7 +1,7 @@
 phrases:
-  msg_sent: '&1%PLAYER% &f just tried to say &4%WORD%'
+  msg_sent: '&4&l[CF] &1%PLAYER% &f just tried to say &4%WORD%'
   no_permission: '&4You do not have permission to use this command!'
-  reload: '&aReload completed!'
+  reload: '&4&l[CF] &aReload completed!'
 
 warnings:
   swearing: '&4Do not swear in chat!'

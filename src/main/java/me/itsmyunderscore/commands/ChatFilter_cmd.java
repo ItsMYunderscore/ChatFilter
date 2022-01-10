@@ -38,7 +38,7 @@ public class ChatFilter_cmd implements CommandExecutor {
                     changeLog(player);
                 }
             }
-            case 0: {
+            case 0:
                 if (sender instanceof Player) {
                     Player player = (Player) sender;
                     player.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "Chat Filter by " + ChatColor.YELLOW + "ItsMYunderscore");
@@ -47,8 +47,8 @@ public class ChatFilter_cmd implements CommandExecutor {
                     Message.log("Chat Filter by ItsMYunderscore");
                     return false;
                 }
-            }
-            default: {
+
+            default:
                 if (sender instanceof Player) {
                     Player player = (Player) sender;
                     player.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "Chat Filter by " + ChatColor.YELLOW + "ItsMYunderscore");
@@ -57,7 +57,7 @@ public class ChatFilter_cmd implements CommandExecutor {
                     Message.log("Chat Filter by ItsMYunderscore");
                     return false;
                 }
-            }
+
         }
     }
 

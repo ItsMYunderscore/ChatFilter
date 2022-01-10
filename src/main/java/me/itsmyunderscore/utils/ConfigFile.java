@@ -2,7 +2,7 @@
  * This plugin has been created by ItsMYunderscore.
  * It is prohibited from any use without written agreement with the author.
  *
- * Copyright (c) ItsMYunderscore 2021.
+ * Copyright (c) ItsMYunderscore 2022.
  */
 
 package me.itsmyunderscore.utils;
@@ -71,9 +71,5 @@ public class ConfigFile extends YamlConfiguration {
     public List<String> getStringList(String path) {
         return super.getStringList(path).stream().map(StringUtil::color).collect(Collectors.toList());
     }
-
-    /*public File getFile() {
-        return file;                    Might come in handy
-    } */
 
 }
