@@ -22,6 +22,8 @@ public class Lang {
     public static String PLAYER_WARNING_IMPROPER;
 
     public Lang() {
+        if (Config.DB_ENABLED) return;
+
         try {
             ConfigFile config = new ConfigFile("lang.yml");
 

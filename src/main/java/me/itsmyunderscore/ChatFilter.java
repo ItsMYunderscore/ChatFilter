@@ -1,12 +1,20 @@
 /*
- * This plugin has been created by ItsMYunderscore.
- * It is prohibited from any use without written agreement with the author.
+ * File Name: ChatFilter.java
  *
- * Copyright (c) ItsMYunderscore 2022.
+ * Copyright (c) $YEAR$ Filip Kukelka also knows as ItsMY_
+ * All rights reserved.
+ *
+ * Date of File Creation: 22/05/2023, 09:58
+ *
+ *  This file contains original work created by Filip Kukelka.
+ *  Unauthorized use, reproduction, or distribution of this file, or any portion
+ *  of it, is strictly prohibited without the express written consent of the author.
+ *
  */
 
 package me.itsmyunderscore;
 
+import lombok.Getter;
 import me.itsmyunderscore.commands.CFLang_cmd;
 import me.itsmyunderscore.commands.ChatFilter_cmd;
 import me.itsmyunderscore.commands.Debug_cmd;
@@ -15,6 +23,7 @@ import me.itsmyunderscore.config.Config;
 import me.itsmyunderscore.config.ForbiddenWords;
 import me.itsmyunderscore.config.Lang;
 import me.itsmyunderscore.events.ChatEvent;
+import me.itsmyunderscore.managers.DatabaseManager;
 import me.itsmyunderscore.utils.ConfigUtil;
 import me.itsmyunderscore.utils.Filter;
 import me.itsmyunderscore.utils.Message;
@@ -24,11 +33,10 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Objects;
 
-
+@Getter
 public final class ChatFilter extends JavaPlugin {
 
     private static ChatFilter instance;
-    private static Filter filter;
 
     public static ChatFilter getInstance() {
         return instance;
@@ -37,6 +45,14 @@ public final class ChatFilter extends JavaPlugin {
     public static Filter getFilter() {
         return filter;
     }
+
+    public DatabaseManager getDatabaseManager() {
+        return databaseManager;
+    }
+
+    private static Filter filter;
+    private DatabaseManager databaseManager;
+
 
     @Override
     public void onEnable() {
@@ -88,6 +104,16 @@ public final class ChatFilter extends JavaPlugin {
             new Config();
             new ForbiddenWords();
             new Lang();
+
+            if (Config.DB_ENABLED){
+                databaseManager = new DatabaseManager();
+
+                databaseManager.loadConfigData();
+
+                Config.save();
+                ForbiddenWords.save();
+                Lang.save();
+            }
 
             filter = new Filter();
         } catch (Exception exception) {

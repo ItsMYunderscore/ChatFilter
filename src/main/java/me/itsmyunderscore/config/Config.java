@@ -18,6 +18,12 @@ public class Config {
     public static boolean WORDMANAGER_CMD_ENABLED;
     public static boolean SAFE_MODE_ENABLED;
     public static boolean ALLOW_CERTAIN_WEBSITES;
+    public static boolean DB_ENABLED;
+    public static String DB_HOST;
+    public static int DB_PORT;
+    public static String DB_NAME;
+    public static String DB_USER;
+    public static String DB_USER_PASSWORD;
     private static ConfigFile configFile;
 
     public Config() {
@@ -29,6 +35,14 @@ public class Config {
             WORDMANAGER_CMD_ENABLED = config.getBoolean("options.filter.word_manager");
             SAFE_MODE_ENABLED = config.getBoolean("options.filter.safe_mode.enabled");
             ALLOW_CERTAIN_WEBSITES = config.getBoolean("options.filter.safe_mode.allow_my_websites");
+
+            // DB variables
+            DB_ENABLED = config.getBoolean("database.enabled");
+            DB_HOST = config.getString("database.host");
+            DB_PORT = config.getInt("database.port");
+            DB_NAME = config.getString("database.name");
+            DB_USER = config.getString("database.user");
+            DB_USER_PASSWORD = config.getString("database.password");
 
             configFile = config;
         } catch (Exception exception) {

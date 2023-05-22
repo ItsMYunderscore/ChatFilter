@@ -1,8 +1,22 @@
+# Configuration file
+
 options:
+  # Database settings
+  database:
+    enabled: true            # Set to true to enable database connection
+    host: localhost          # Database host
+    port: 3306               # Database port
+    name: your_database_name # Database name
+    user: your_username      # Database username
+    password: your_password  # Database password
+
+  # Filter settings
   filter:
-    enabled: true
-    debug: false
-    word_manager: false
-    safe_mode:
-      enabled: true
-      allow_my_websites: true
+    enabled: true            # Enable filter
+    debug: false             # Enable debug mode
+    word_manager: false      # Enable word manager
+
+  # Safe mode settings
+  safe_mode:
+    enabled: true            # Enable safe mode
+    allow_my_websites: true  # Allow certain websites

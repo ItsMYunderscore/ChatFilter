@@ -19,6 +19,8 @@ public class ForbiddenWords {
     private static ConfigFile wordsFile;
 
     public ForbiddenWords() {
+        if (Config.DB_ENABLED) return;
+
         try {
             ConfigFile forbiddenWords = new ConfigFile("forbidden_words.yml");
 

@@ -7,6 +7,7 @@
 
 package me.itsmyunderscore.utils;
 
+import me.itsmyunderscore.ChatFilter;
 import me.itsmyunderscore.config.Config;
 import me.itsmyunderscore.config.ForbiddenWords;
 import me.itsmyunderscore.config.Lang;
@@ -14,11 +15,22 @@ import org.bukkit.entity.Player;
 
 public class ConfigUtil {
     public static void reload(Player player) {
-        Config.reload();
-        ForbiddenWords.reload();
-        Lang.reload();
+        if (Config.DB_ENABLED) {
+            ChatFilter.getInstance().getDatabaseManager().loadConfigData();
+        } else {
+            Config.reload();
+            ForbiddenWords.reload();
+            Lang.reload();
+        }
+
+
 
         player.sendMessage(StringUtil.color(Lang.RELOAD));
+    }
+
+    public static String createDBURL(String host, int port, String databaseName) {
+        String url = "jdbc:mysql://" + host + ":" + port + "/" + databaseName;
+        return url;
     }
 
     public static void save() {
