@@ -1,0 +1,6 @@
+# Configuration file for characters
+
+characters:
+  - [ "a", "4" ]
+  - [ "e", "3" ]
+  - [ "a", "@" ]

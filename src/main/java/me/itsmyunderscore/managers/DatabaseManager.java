@@ -17,6 +17,7 @@ package me.itsmyunderscore.managers;
 import me.itsmyunderscore.config.Config;
 import me.itsmyunderscore.config.ForbiddenWords;
 import me.itsmyunderscore.config.Lang;
+import me.itsmyunderscore.config.Chars;
 import me.itsmyunderscore.utils.ConfigUtil;
 import me.itsmyunderscore.utils.Message;
 import org.bukkit.Bukkit;
@@ -55,14 +56,6 @@ public class DatabaseManager {
                 ForbiddenWords.FORBIDDEN_WORDS.add(forbiddenWordsResult.getString("word"));
             }
 
-            // Load data into AllowedWebsites class
-            PreparedStatement allowedWebsitesStmt = conn.prepareStatement("SELECT * FROM allowed_websites");
-            ResultSet allowedWebsitesResult = allowedWebsitesStmt.executeQuery();
-            ForbiddenWords.ALLOWED_WEBSITES.clear();
-            while (allowedWebsitesResult.next()) {
-                ForbiddenWords.ALLOWED_WEBSITES.add(allowedWebsitesResult.getString("website"));
-            }
-
             // Load data into Lang class
             PreparedStatement langStmt = conn.prepareStatement("SELECT * FROM lang_phrases");
             ResultSet langResult = langStmt.executeQuery();
@@ -72,19 +65,21 @@ public class DatabaseManager {
                 Lang.RELOAD = langResult.getString("reload_completed");
             }
 
-            PreparedStatement warningsStmt = conn.prepareStatement("SELECT * FROM lang_warnings");
-            ResultSet warningsResult = warningsStmt.executeQuery();
-            if (warningsResult.next()) {
-                Lang.PLAYER_WARNING_SWEARING = warningsResult.getString("swearing");
-                Lang.PLAYER_WARNING_IMPROPER = warningsResult.getString("improper");
+            // Load data into Chars class
+            PreparedStatement charsStmt = conn.prepareStatement("SELECT * FROM characters");
+            ResultSet charsResult = charsStmt.executeQuery();
+            Chars.CHARACTERS.clear();
+            while (charsResult.next()) {
+                String character = charsResult.getString("character");
+                String description = charsResult.getString("description");
+                String[] charArray = { character, description };
+                Chars.CHARACTERS.add(charArray);
             }
 
             conn.close();
         } catch (SQLException e) {
             Message.log("DB connection failed - " + e.getMessage());
             Message.log("Shutting down...");
-
-
             Bukkit.shutdown();
         }
     }
@@ -109,15 +104,6 @@ public class DatabaseManager {
                 insertWordStmt.executeUpdate();
             }
 
-            // Save data from AllowedWebsites class
-            PreparedStatement allowedWebsitesStmt = conn.prepareStatement("TRUNCATE TABLE allowed_websites");
-            allowedWebsitesStmt.executeUpdate();
-            for (String website : ForbiddenWords.ALLOWED_WEBSITES) {
-                PreparedStatement insertWebsiteStmt = conn.prepareStatement("INSERT INTO allowed_websites (website) VALUES (?)");
-                insertWebsiteStmt.setString(1, website);
-                insertWebsiteStmt.executeUpdate();
-            }
-
             // Save data from Lang class
             PreparedStatement langStmt = conn.prepareStatement("UPDATE lang_phrases SET message_sent = ?, no_permission = ?, reload_completed = ?");
             langStmt.setString(1, Lang.MSG_SENT);
@@ -125,17 +111,20 @@ public class DatabaseManager {
             langStmt.setString(3, Lang.RELOAD);
             langStmt.executeUpdate();
 
-            PreparedStatement warningsStmt = conn.prepareStatement("UPDATE lang_warnings SET swearing = ?, improper = ?");
-            warningsStmt.setString(1, Lang.PLAYER_WARNING_SWEARING);
-            warningsStmt.setString(2, Lang.PLAYER_WARNING_IMPROPER);
-            warningsStmt.executeUpdate();
+            // Save data from Chars class
+            PreparedStatement charsStmt = conn.prepareStatement("TRUNCATE TABLE characters");
+            charsStmt.executeUpdate();
+            for (String[] charArray : Chars.CHARACTERS) {
+                PreparedStatement insertCharStmt = conn.prepareStatement("INSERT INTO characters (character, description) VALUES (?, ?)");
+                insertCharStmt.setString(1, charArray[0]);
+                insertCharStmt.setString(2, charArray[1]);
+                insertCharStmt.executeUpdate();
+            }
 
             conn.close();
         } catch (SQLException e) {
             Message.log("DB connection failed - " + e.getMessage());
             Message.log("Shutting down...");
-
-
             Bukkit.shutdown();;
         }
     }
@@ -144,4 +133,3 @@ public class DatabaseManager {
         loadConfigData();
     }
 }
-

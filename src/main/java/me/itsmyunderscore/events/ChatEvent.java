@@ -7,6 +7,7 @@
 
 package me.itsmyunderscore.events;
 
+import me.itsmyunderscore.config.Chars;
 import me.itsmyunderscore.config.Config;
 import me.itsmyunderscore.config.ForbiddenWords;
 import me.itsmyunderscore.config.Lang;
@@ -54,6 +55,16 @@ public class ChatEvent implements Listener {
             return;
         }
 
+        String modifiedMessage = message;
+
+        for (String[] characterArray : Chars.CHARACTERS) {
+            if (characterArray.length >= 2) {
+                String characterName = characterArray[0];
+                String characterKeyword = characterArray[1];
+                modifiedMessage = modifiedMessage.replaceAll(characterKeyword, characterName);
+            }
+        }
+
         for (String word : ForbiddenWords.FORBIDDEN_WORDS) {
             Message.debug("Checking for this " + word);
             if (message.toLowerCase().contains(word)) {
@@ -67,6 +78,31 @@ public class ChatEvent implements Listener {
 
                 Message.debug("Word censored");
                 event.setMessage(message.replace(word, selectedWord.toString()));
+                player.sendMessage(StringUtil.color(Lang.PLAYER_WARNING_SWEARING));
+                Message.debug("msg replaced");
+
+                break;
+            }
+        }
+
+        for (String word : ForbiddenWords.FORBIDDEN_WORDS) {
+            Message.debug("Checking for this " + word + " in modified message");
+            if (modifiedMessage.toLowerCase().contains(word)) {
+                int startIndex = modifiedMessage.toLowerCase().indexOf(word);
+                filteredWord = modifiedMessage;
+
+                Message.debug("Word found");
+
+                char[] messageChars = message.toCharArray();
+
+                for (int i = startIndex; i < word.length()+startIndex; i++) {
+                    messageChars[i] = '*';
+                }
+
+                message = messageChars.toString();
+
+                Message.debug("Word censored");
+                event.setMessage(message);
                 player.sendMessage(StringUtil.color(Lang.PLAYER_WARNING_SWEARING));
                 Message.debug("msg replaced");
 

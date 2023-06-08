@@ -69,3 +69,17 @@ CREATE TABLE lang_warnings
 INSERT INTO lang_warnings (swearing, improper)
 VALUES ('&4Do not swear in chat!',
         '&4Do not send links or IP addresses!');
+
+-- Create characters table
+CREATE TABLE characters
+(
+    id          INT PRIMARY KEY AUTO_INCREMENT,
+    character   VARCHAR(255),
+    description VARCHAR(255)
+);
+
+-- Insert data into characters table
+INSERT INTO characters (character, description)
+VALUES ('a', '4'),
+       ('e', '3'),
+       ('a', '@');
